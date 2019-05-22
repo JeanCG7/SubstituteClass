@@ -1,12 +1,10 @@
 package com.substituicao.demo.regras;
 
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import com.substituicao.demo.dao.PlanoDeSubstituicaoDAO;
 import com.substituicao.demo.dto.ChefiaDTO;
 import com.substituicao.demo.dto.CoordenadorCursoDTO;
 import com.substituicao.demo.dto.PessoaDTO;
 import com.substituicao.demo.dto.PlanoDeSubstituicaoDTO;
-import com.substituicao.demo.entity.Chefia;
 import com.substituicao.demo.entity.PlanoDeSubstituicao;
 import com.substituicao.demo.exception.AprovadorNaoAutorizadoException;
 import com.substituicao.demo.exception.DocenteDesativadoException;
