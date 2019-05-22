@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +19,7 @@ public class Aula implements Serializable {
     @Id @GeneratedValue
     private Long id;
 
-    //private Date data;
+    private Date data;
 
     @OneToOne
     private Docente professor;
@@ -25,7 +27,13 @@ public class Aula implements Serializable {
     @ManyToOne
     private Turma turma;
 
-    @ManyToMany
+    @OneToMany
+    @JoinTable
+    (
+        name="aula_alunos",
+        joinColumns = { @JoinColumn(name="Aula_ID", referencedColumnName = "Id")},
+        inverseJoinColumns = { @JoinColumn(name="Aluno_ID", referencedColumnName = "Id")}
+    )
     private List<Aluno> listaDePresenca;
 
     @OneToOne
