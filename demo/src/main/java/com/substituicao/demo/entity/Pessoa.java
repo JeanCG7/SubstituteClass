@@ -11,7 +11,6 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-@Builder
 @MappedSuperclass
 public abstract class Pessoa implements Serializable {
     @Id @GeneratedValue

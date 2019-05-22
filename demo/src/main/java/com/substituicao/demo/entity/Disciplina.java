@@ -20,7 +20,6 @@ public class Disciplina implements Serializable {
     @Id @GeneratedValue
     private long id;
     private String nome;
-    private int qtdAulasDiarias;
 
 
     @ManyToOne

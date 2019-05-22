@@ -6,6 +6,5 @@ import lombok.Builder;
 public class DisciplinaDTO {
     private long id;
     private String nome;
-    private int qtdAulasDiarias;
     private CursoDTO curso;
 }

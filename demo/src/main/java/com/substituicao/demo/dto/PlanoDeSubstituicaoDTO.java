@@ -14,4 +14,6 @@ public class PlanoDeSubstituicaoDTO {
     private DocenteDTO requirinte;
 
     private AulaDTO aula;
+
+    private boolean aprovado;
 }

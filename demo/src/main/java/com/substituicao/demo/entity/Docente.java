@@ -14,5 +14,6 @@ import java.io.Serializable;
 @Builder
 @Entity
 public class Docente extends Pessoa implements Serializable{
-
+    private String documentoDocente;
+    private boolean ativo;
 }

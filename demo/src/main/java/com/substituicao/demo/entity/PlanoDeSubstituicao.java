@@ -24,4 +24,6 @@ public class PlanoDeSubstituicao implements Serializable {
 
     @OneToOne
     private Aula aula;
+
+    private boolean aprovacao;
 }
