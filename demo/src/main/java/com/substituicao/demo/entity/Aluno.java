@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
@@ -16,11 +14,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Disciplina implements Serializable {
-    @Id @GeneratedValue
-    private long id;
-    private String nome;
-
+public class Aluno extends Pessoa implements Serializable {
     @ManyToOne
     private Curso curso;
+
 }

@@ -15,7 +15,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @Entity
-
 public class Curso implements Serializable {
     @Id @GeneratedValue
     private Long id;
