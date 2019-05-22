@@ -23,6 +23,8 @@ public class Aula implements Serializable {
 
     private int aulas;
 
+    private boolean concluida;
+
     @OneToOne
     private Docente professor;
 
