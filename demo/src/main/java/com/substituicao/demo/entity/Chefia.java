@@ -14,5 +14,5 @@ import java.io.Serializable;
 @Builder
 @Entity
 public class Chefia extends Pessoa implements Serializable {
-
+    private String documentoServidor;
 }
