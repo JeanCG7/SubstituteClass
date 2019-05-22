@@ -21,6 +21,8 @@ public class Aula implements Serializable {
 
     private Date data;
 
+    private int aulas;
+
     @OneToOne
     private Docente professor;
 
