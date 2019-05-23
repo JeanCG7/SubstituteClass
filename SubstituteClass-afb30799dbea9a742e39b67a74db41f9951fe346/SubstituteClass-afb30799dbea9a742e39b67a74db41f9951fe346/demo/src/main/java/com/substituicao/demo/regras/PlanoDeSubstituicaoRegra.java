@@ -11,6 +11,8 @@ import com.substituicao.demo.exception.DocenteDesativadoException;
 import org.springframework.beans.BeanUtils;
 /*
     - Regras de negócio não finalizadas
+    - Não Cumpriu todas as regras.
+    - Faltou a regra de que não poderia ser substituidas mais de 6 aulas por dia.
 */
 public class PlanoDeSubstituicaoRegra {
 
@@ -20,7 +22,7 @@ public class PlanoDeSubstituicaoRegra {
     {
         if(plano.getAula().getProfessor().getAtivo() == false)
             throw new DocenteDesativadoException();
-
+           //condição IF com erros, faz usos de metodos que não estão disponiveis.
         PlanoDeSubstituicao planoEntity = new PlanoDeSubstituicao();
         BeanUtils.copyProperties(plano, planoEntity);
 

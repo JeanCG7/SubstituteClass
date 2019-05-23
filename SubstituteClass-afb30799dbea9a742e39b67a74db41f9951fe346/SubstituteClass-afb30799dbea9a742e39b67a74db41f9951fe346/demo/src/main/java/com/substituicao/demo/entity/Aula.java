@@ -26,7 +26,7 @@ public class Aula implements Serializable {
 
     private boolean concluida;
 
-    @OneToOne
+    @OneToOne // aqui deveria ter uma relação de um-para-muitos  = um professor para muitas aulas
     private Docente professor;
 
     @ManyToOne
@@ -41,6 +41,6 @@ public class Aula implements Serializable {
     )
     private List<Aluno> listaDePresenca;
 
-    @OneToOne
+    @OneToOne // aqui deveria ter uma relação de um-para-muitos, um planoDesubstituicçao para muitas aulas
     private PlanoDeSubstituicao planoDeSubstituicao;
 }
