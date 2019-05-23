@@ -19,6 +19,7 @@ public class Aula implements Serializable {
     @Id @GeneratedValue
     private Long id;
 
+    /* - Não informa o tipo da data (@Temporal) */
     private Date data;
 
     private int aulas;

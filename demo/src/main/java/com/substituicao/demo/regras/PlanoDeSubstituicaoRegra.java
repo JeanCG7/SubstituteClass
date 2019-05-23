@@ -9,7 +9,9 @@ import com.substituicao.demo.entity.PlanoDeSubstituicao;
 import com.substituicao.demo.exception.AprovadorNaoAutorizadoException;
 import com.substituicao.demo.exception.DocenteDesativadoException;
 import org.springframework.beans.BeanUtils;
-
+/*
+    - Regras de negócio não finalizadas
+*/
 public class PlanoDeSubstituicaoRegra {
 
     private PlanoDeSubstituicaoDAO planoDeSubstituicaoDAO;
