@@ -1,6 +1,5 @@
 package com.substituicao.demo.dto;
 
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,6 +17,6 @@ public class AulaDTO {
     private TurmaDTO turma;
 
     private List<AlunoDTO> listaDePresenca;
-    private PlanoDeSubstituicaoDTO planoDeSubstituicaoDTO ;
+    private PlanoDeSubstituicaoDTO planoDeSubstituicaoDTO;
 
 }
