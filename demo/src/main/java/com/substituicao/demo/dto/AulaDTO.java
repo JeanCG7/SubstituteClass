@@ -14,7 +14,6 @@ public class AulaDTO {
     private Date data;
     private int aulas;
     private boolean concluida;
-    private DocenteDTO professor;
     private TurmaDTO turma;
 
     private List<AlunoDTO> listaDePresenca;

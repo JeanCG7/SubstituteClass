@@ -25,9 +25,6 @@ public class Aula implements Serializable {
 
     private boolean concluida;
 
-    @OneToOne
-    private Docente professor;
-
     @ManyToOne
     private Turma turma;
 

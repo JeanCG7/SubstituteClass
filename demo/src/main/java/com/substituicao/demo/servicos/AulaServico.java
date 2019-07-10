@@ -95,7 +95,6 @@ public class AulaServico {
             aula.get().setAulas(aulaReq.getAulas());
             aula.get().setData(aulaReq.getData());
             aula.get().setListaDePresenca(aulaReq.getListaDePresenca());
-            aula.get().setProfessor(aulaReq.getProfessor());
         }
 
         return ResponseEntity.of(aula);
