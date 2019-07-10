@@ -20,7 +20,10 @@ public class Turma implements Serializable {
     private String codigo;
 
     @ManyToOne
-    private Curso curso;
+    private Disciplina disciplina;
+
+    @ManyToOne
+    private Docente docente;
 
     @OneToMany
     @JoinTable

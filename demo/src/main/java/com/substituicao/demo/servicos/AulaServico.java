@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 public class AulaServico {
     private List<TurmaDTO> turmas;
     private List<DocenteDTO> docentes;
+    private List<DisciplinaDTO> disciplinas;
     private List<CursoDTO> cursos;
     private List<AlunoDTO> alunos;
     private List<AulaDTO> aulas;
@@ -24,6 +25,13 @@ public class AulaServico {
                 CursoDTO.builder().id(2).nome("Eng. de Computação").build(),
                 CursoDTO.builder().id(3).nome("Análise e Desenv. de Sistemas").build()
                 ).collect(Collectors.toList());
+
+        disciplinas = Stream.of(
+                DisciplinaDTO.builder().id(1).nome("Arquitetura de software").curso(cursos.get(0)).build(),
+                DisciplinaDTO.builder().id(2).nome("Programação web 2").curso(cursos.get(0)).build(),
+                DisciplinaDTO.builder().id(3).nome("Banco de dados").curso(cursos.get(1)).build(),
+                DisciplinaDTO.builder().id(4).nome("Comunicação oral e escrita").curso(cursos.get(2)).build()
+        ).collect(Collectors.toList());
 
         docentes = Stream.of(
                 DocenteDTO.builder().id(1).nome("Gabriel Costa").email("gabriel@utf.com").documentoDocente("DOC111").ativo(true).build(),
@@ -40,9 +48,10 @@ public class AulaServico {
                 ).collect(Collectors.toList());
 
         turmas = Stream.of(
-                TurmaDTO.builder().id(1).codigo("ES57").alunos(alunos).curso(cursos.get(0)).build(),
-                TurmaDTO.builder().id(2).codigo("ES77").alunos(alunos).curso(cursos.get(1)).build(),
-                TurmaDTO.builder().id(3).codigo("ES97").alunos(alunos).curso(cursos.get(2)).build()
+                TurmaDTO.builder().id(1).codigo("ES57").alunos(alunos).disciplina(disciplinas.get(0)).docente(docentes.get(1)).build(),
+                TurmaDTO.builder().id(1).codigo("ES57").alunos(alunos).disciplina(disciplinas.get(1)).docente(docentes.get(0)).build(),
+                TurmaDTO.builder().id(2).codigo("ES77").alunos(alunos).disciplina(disciplinas.get(2)).docente(docentes.get(1)).build(),
+                TurmaDTO.builder().id(3).codigo("ES97").alunos(alunos).disciplina(disciplinas.get(3)).docente(docentes.get(1)).build()
                 ).collect(Collectors.toList());
 
     }

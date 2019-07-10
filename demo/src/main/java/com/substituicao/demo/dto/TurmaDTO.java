@@ -10,6 +10,7 @@ import java.util.List;
 public class TurmaDTO {
     private long id;
     private String codigo;
-    private CursoDTO curso;
+    private DisciplinaDTO disciplina;
+    private DocenteDTO docente;
     private List<AlunoDTO> alunos;
 }
