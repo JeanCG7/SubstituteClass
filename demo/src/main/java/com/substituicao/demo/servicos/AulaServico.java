@@ -105,7 +105,7 @@ public class AulaServico {
 	}
 
 	@PostMapping("/servico/aulas")
-	public ResponseEntity<AulaDTO> criar(@RequestBody AulaModel aulaModel) throws ParametroNaoEncontradoException {
+	public ResponseEntity<Long> criar(@RequestBody AulaModel aulaModel) throws ParametroNaoEncontradoException {
 		Optional<TurmaDTO> turmaExistente = turmas.stream().filter(t -> t.getId() == aulaModel.getTurmaId()).findAny();
 		AulaDTO aula = AulaDTO.builder().id(generateUniqueId()).titulo(aulaModel.getTitulo()).data(aulaModel.getData())
 				.aulas(aulaModel.getAulas())
@@ -113,7 +113,7 @@ public class AulaServico {
 						.orElseThrow(() -> new ParametroNaoEncontradoException(aulaModel.getTurmaId(), "Turma")))
 				.build();
 		this.aulas.add(aula);
-		return ResponseEntity.status(201).body(aula);
+		return ResponseEntity.status(201).body(new Long(1));
 	}
 
 	@PutMapping("/servico/aulas/{id}")
