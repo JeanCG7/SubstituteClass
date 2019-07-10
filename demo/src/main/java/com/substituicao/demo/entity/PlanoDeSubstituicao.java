@@ -20,7 +20,7 @@ public class PlanoDeSubstituicao implements Serializable {
     private String justificativa;
 
     @OneToOne
-    private Docente requirinte;
+    private Docente requerente;
 
     @OneToOne
     private Aula aula;

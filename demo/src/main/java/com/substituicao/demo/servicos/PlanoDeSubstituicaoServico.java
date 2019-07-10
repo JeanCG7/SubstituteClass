@@ -5,7 +5,7 @@ import com.substituicao.demo.dto.DocenteDTO;
 import com.substituicao.demo.dto.PlanoDeSubstituicaoDTO;
 import com.substituicao.demo.exception.LimiteAulaDiariaSubstituicaoException;
 import com.substituicao.demo.exception.ParametroNaoEncontradoException;
-import com.substituicao.demo.exception.RequirinteNaoAutorizadoException;
+import com.substituicao.demo.exception.RequerenteNaoAutorizadoException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +19,7 @@ public class PlanoDeSubstituicaoServico {
 
     private List<PlanoDeSubstituicaoDTO> planos;
     private List<AulaDTO> aulas;
-    private List<DocenteDTO> requirintes;
+    private List<DocenteDTO> requerentes;
 
     @GetMapping("/servico/plano")
     public ResponseEntity<List<PlanoDeSubstituicaoDTO>> listar() {
@@ -38,14 +38,14 @@ public class PlanoDeSubstituicaoServico {
             throw new LimiteAulaDiariaSubstituicaoException();
 
         Optional<AulaDTO> aulaExistente = aulas.stream().filter(a -> a.getId() == plano.getAula().getId()).findAny();
-        Optional<DocenteDTO> requirinteExistente = requirintes.stream().filter(r -> r.getId() == plano.getRequirinte().getId()).findAny();
+        Optional<DocenteDTO> requerenteExistente = requerentes.stream().filter(r -> r.getId() == plano.getRequerente().getId()).findAny();
 
         plano.setAula(
                 Optional.ofNullable(aulaExistente.get()).orElseThrow(() ->
                         new ParametroNaoEncontradoException(plano.getAula().getId(), "Aula")));
-        plano.setRequirinte(
-                Optional.ofNullable(requirinteExistente.get()).orElseThrow(() ->
-                        new ParametroNaoEncontradoException(plano.getRequirinte().getId(), "Requirinte")));
+        plano.setRequerente(
+                Optional.ofNullable(requerenteExistente .get()).orElseThrow(() ->
+                        new ParametroNaoEncontradoException(plano.getRequerente().getId(), "Requirinte")));
         plano.setAprovado(false);
 
         long maiorPlanoId = Collections.max(planos, Comparator.comparing(c -> c.getId())).getId();
@@ -61,24 +61,24 @@ public class PlanoDeSubstituicaoServico {
 
         if (plano.isPresent()) {
             Optional<AulaDTO> aulaExistente = aulas.stream().filter(a -> a.getId() == plano.get().getAula().getId()).findAny();
-            Optional<DocenteDTO> requirinteExistente = requirintes.stream().filter(r -> r.getId() == plano.get().getRequirinte().getId()).findAny();
+            Optional<DocenteDTO> requerenteExistente = requerentes.stream().filter(r -> r.getId() == plano.get().getRequerente().getId()).findAny();
             plano.get().setAula(
                     Optional.ofNullable(aulaExistente.get()).orElseThrow(() ->
                             new ParametroNaoEncontradoException(plano.get().getAula().getId(), "Aula")));
-            plano.get().setRequirinte(
-                    Optional.ofNullable(requirinteExistente.get()).orElseThrow(() ->
-                            new ParametroNaoEncontradoException(plano.get().getRequirinte().getId(), "Requirinte")));
+            plano.get().setRequerente(
+                    Optional.ofNullable(requerenteExistente.get()).orElseThrow(() ->
+                            new ParametroNaoEncontradoException(plano.get().getRequerente().getId(), "Requirinte")));
             plano.get().setJustificativa(planoReq.getJustificativa());
         }
         return ResponseEntity.of(plano);
     }
 
     @PutMapping("/servico/plano/aprovar/{id}")
-    public ResponseEntity mudarStatus(@PathVariable int id, @RequestBody DocenteDTO requirinte) throws RequirinteNaoAutorizadoException {
+    public ResponseEntity mudarStatus(@PathVariable int id, @RequestBody DocenteDTO requerente) throws RequerenteNaoAutorizadoException {
         Optional<PlanoDeSubstituicaoDTO> plano = planos.stream().filter(p -> p.getId() == id).findAny();
 
-        if (plano.get().getRequirinte().getId() != requirinte.getId())
-            throw new RequirinteNaoAutorizadoException();
+        if (plano.get().getRequerente().getId() != requerente.getId())
+            throw new RequerenteNaoAutorizadoException();
 
         plano.ifPresent(p -> {
             p.setAprovado(true);

@@ -11,7 +11,7 @@ public class PlanoDeSubstituicaoDTO {
 
     private String justificativa;
 
-    private DocenteDTO requirinte;
+    private DocenteDTO requerente;
 
     private AulaDTO aula;
 
