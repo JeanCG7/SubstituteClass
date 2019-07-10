@@ -19,6 +19,8 @@ public class Aula implements Serializable {
     @Id @GeneratedValue
     private Long id;
 
+    private String titulo;
+
     private Date data;
 
     private int aulas;

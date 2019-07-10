@@ -11,6 +11,7 @@ import java.util.List;
 @Builder
 public class AulaDTO {
     private Long id;
+    private String titulo;
     private Date data;
     private int aulas;
     private boolean concluida;

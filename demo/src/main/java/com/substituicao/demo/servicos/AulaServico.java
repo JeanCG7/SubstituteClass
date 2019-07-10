@@ -1,11 +1,10 @@
 package com.substituicao.demo.servicos;
 
 import com.substituicao.demo.dto.*;
-import com.substituicao.demo.exception.TurmaNaoEncontradaException;
+import com.substituicao.demo.exception.ParametroNaoEncontradoException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Response;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -67,31 +66,31 @@ public class AulaServico {
         return ResponseEntity.of(aula);
     }
     @PostMapping("/servico/aula")
-    public ResponseEntity<AulaDTO> criar (@RequestBody AulaDTO aula) throws TurmaNaoEncontradaException {
+    public ResponseEntity<AulaDTO> criar (@RequestBody AulaDTO aula) throws ParametroNaoEncontradoException {
         Optional<TurmaDTO> turmaExistente = turmas.stream().filter(t -> t.getId() == aula.getTurma().getId()).findAny();
 
         aula.setTurma(
                 Optional.ofNullable(turmaExistente.get()).orElseThrow(() ->
-                    new TurmaNaoEncontradaException("Turma com id: " + aula.getTurma().getId() + " não encontrada")));
+                    new ParametroNaoEncontradoException(aula.getTurma().getId(), "Turma")));
 
         long maiorAulaId = Collections.max(aulas, Comparator.comparing(c -> c.getId())).getId();
-        aula.setId(maiorAulaId + 1);
+        aula.setId(maiorAulaId+1);
         aulas.add(aula);
 
         return ResponseEntity.status(201).body(aula);
     }
 
     @PutMapping("/servico/aula/{id}")
-    public ResponseEntity<AulaDTO> atualizar (@PathVariable int id, @RequestBody AulaDTO aulaReq) throws TurmaNaoEncontradaException {
+    public ResponseEntity<AulaDTO> atualizar (@PathVariable int id, @RequestBody AulaDTO aulaReq) throws ParametroNaoEncontradoException {
         Optional<AulaDTO> aula = aulas.stream().filter(a -> a.getId() == id).findAny();
 
-        if(aula.isPresent())
-        {
+        if(aula.isPresent()) {
             Optional<TurmaDTO> turmaExistente = turmas.stream().filter(t -> t.getId() == aula.get().getTurma().getId()).findAny();
             aula.get().setTurma(
                     Optional.ofNullable(turmaExistente.get()).orElseThrow(() ->
-                            new TurmaNaoEncontradaException("Turma com id: " + aula.get().getTurma().getId() + " não encontrada")));
+                            new ParametroNaoEncontradoException(aula.get().getTurma().getId(), "Turma")));
             aula.get().setId(aulaReq.getId());
+            aula.get().setTitulo(aulaReq.getTitulo());
             aula.get().setAulas(aulaReq.getAulas());
             aula.get().setData(aulaReq.getData());
             aula.get().setListaDePresenca(aulaReq.getListaDePresenca());
@@ -102,7 +101,7 @@ public class AulaServico {
 
     @DeleteMapping("/servico/aula/{id}")
     public ResponseEntity deletar (@PathVariable int id) {
-        if (aulas.removeIf(aulas -> aulas.getId() == id))
+        if (aulas.removeIf(aula -> aula.getId() == id))
             return ResponseEntity.noContent().build();
         else
             return ResponseEntity.notFound().build();
