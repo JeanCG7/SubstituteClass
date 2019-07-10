@@ -5,6 +5,7 @@ import com.substituicao.demo.dto.DocenteDTO;
 import com.substituicao.demo.dto.PlanoDeSubstituicaoDTO;
 import com.substituicao.demo.exception.LimiteAulaDiariaSubstituicaoException;
 import com.substituicao.demo.exception.ParametroNaoEncontradoException;
+import com.substituicao.demo.exception.RequirinteNaoAutorizadoException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,12 +73,17 @@ public class PlanoDeSubstituicaoServico {
         return ResponseEntity.of(plano);
     }
 
-    @PutMapping("/servico/plano/mudarStatus/{id}")
-    public ResponseEntity mudarStatus(@PathVariable int id, @RequestBody boolean status){
+    @PutMapping("/servico/plano/aprovar/{id}")
+    public ResponseEntity mudarStatus(@PathVariable int id, @RequestBody DocenteDTO requirinte) throws RequirinteNaoAutorizadoException {
         Optional<PlanoDeSubstituicaoDTO> plano = planos.stream().filter(p -> p.getId() == id).findAny();
+
+        if (plano.get().getRequirinte().getId() != requirinte.getId())
+            throw new RequirinteNaoAutorizadoException();
+
         plano.ifPresent(p -> {
-            p.setAprovado(status);
+            p.setAprovado(true);
         });
+
         return ResponseEntity.of(plano);
     }
 
