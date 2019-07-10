@@ -2,9 +2,14 @@ package com.substituicao.demo.servicos;
 
 import com.substituicao.demo.dto.*;
 import com.substituicao.demo.exception.ParametroNaoEncontradoException;
+import com.substituicao.demo.viewmodels.AulaListModel;
+import com.substituicao.demo.viewmodels.AulaModel;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -57,8 +62,6 @@ public class AulaServico {
 		turmas = Stream.of(
 				TurmaDTO.builder().id(1).codigo("ES57").alunos(alunos).disciplina(disciplinas.get(0))
 						.docente(docentes.get(1)).build(),
-				TurmaDTO.builder().id(1).codigo("ES57").alunos(alunos).disciplina(disciplinas.get(1))
-						.docente(docentes.get(0)).build(),
 				TurmaDTO.builder().id(2).codigo("ES77").alunos(alunos).disciplina(disciplinas.get(2))
 						.docente(docentes.get(1)).build(),
 				TurmaDTO.builder().id(3).codigo("ES97").alunos(alunos).disciplina(disciplinas.get(3))
@@ -67,9 +70,32 @@ public class AulaServico {
 		aulas = new ArrayList<>();
 	}
 
+	private Long generateUniqueId() {
+		long val = -1;
+		do {
+			final UUID uid = UUID.randomUUID();
+			final ByteBuffer buffer = ByteBuffer.wrap(new byte[16]);
+			buffer.putLong(uid.getLeastSignificantBits());
+			buffer.putLong(uid.getMostSignificantBits());
+			final BigInteger bi = new BigInteger(buffer.array());
+			val = bi.longValue();
+		}
+		// We also make sure that the ID is in positive space, if its not we simply
+		// repeat the process
+		while (val < 0);
+		return val;
+	}
+
 	@GetMapping("/servico/aulas")
-	public ResponseEntity<List<AulaDTO>> listar() {
-		return ResponseEntity.ok(aulas);
+	public ResponseEntity<List<AulaListModel>> listar() {
+		List<AulaListModel> aulaListModels = new ArrayList<>();
+		for (AulaDTO aula : aulas) {
+			String turmaNome = new String(aula.getTurma().getCodigo().toString() + " - "
+					+ aula.getTurma().getDisciplina().getNome().toString());
+			aulaListModels.add(AulaListModel.builder().id(aula.getId()).titulo(aula.getTitulo()).data(aula.getData())
+					.aulas(aula.getAulas()).turmaNome(turmaNome).build());
+		}
+		return ResponseEntity.ok(aulaListModels);
 	}
 
 	@GetMapping("/servico/aulas/{id}")
@@ -79,16 +105,14 @@ public class AulaServico {
 	}
 
 	@PostMapping("/servico/aulas")
-	public ResponseEntity<AulaDTO> criar(@RequestBody AulaDTO aula) throws ParametroNaoEncontradoException {
-		Optional<TurmaDTO> turmaExistente = turmas.stream().filter(t -> t.getId() == aula.getTurmaId()).findAny();
-
-		aula.setTurma(Optional.ofNullable(turmaExistente.get())
-				.orElseThrow(() -> new ParametroNaoEncontradoException(aula.getTurma().getId(), "Turma")));
-
-		long maiorAulaId = Collections.max(aulas, Comparator.comparing(c -> c.getId())).getId();
-		aula.setId(maiorAulaId + 1);
-		aulas.add(aula);
-
+	public ResponseEntity<AulaDTO> criar(@RequestBody AulaModel aulaModel) throws ParametroNaoEncontradoException {
+		Optional<TurmaDTO> turmaExistente = turmas.stream().filter(t -> t.getId() == aulaModel.getTurmaId()).findAny();
+		AulaDTO aula = AulaDTO.builder().id(generateUniqueId()).titulo(aulaModel.getTitulo()).data(aulaModel.getData())
+				.aulas(aulaModel.getAulas())
+				.turma(Optional.ofNullable(turmaExistente.get())
+						.orElseThrow(() -> new ParametroNaoEncontradoException(aulaModel.getTurmaId(), "Turma")))
+				.build();
+		this.aulas.add(aula);
 		return ResponseEntity.status(201).body(aula);
 	}
 
