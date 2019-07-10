@@ -39,7 +39,4 @@ public class Aula implements Serializable {
         inverseJoinColumns = { @JoinColumn(name="Aluno_ID", referencedColumnName = "Id")}
     )
     private List<Aluno> listaDePresenca;
-
-    @OneToOne
-    private PlanoDeSubstituicao planoDeSubstituicao;
 }

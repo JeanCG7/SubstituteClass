@@ -1,11 +1,14 @@
 package com.substituicao.demo.dto;
 
-import com.substituicao.demo.dao.PlanoDeSubstituicaoDAO;
-import com.substituicao.demo.entity.PlanoDeSubstituicao;
+
+import lombok.Builder;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
+@Data
+@Builder
 public class AulaDTO {
     private Long id;
     private Date data;

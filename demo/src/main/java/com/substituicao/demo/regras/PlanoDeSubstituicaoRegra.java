@@ -16,7 +16,7 @@ public class PlanoDeSubstituicaoRegra {
 
     private PlanoDeSubstituicao salvar(PlanoDeSubstituicaoDTO plano) throws DocenteDesativadoException
     {
-        if(plano.getAula().getProfessor().getAtivo() == false)
+        if(plano. getAula().getProfessor().getAtivo() == false)
             throw new DocenteDesativadoException();
 
         PlanoDeSubstituicao planoEntity = new PlanoDeSubstituicao();
