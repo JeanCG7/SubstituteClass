@@ -19,5 +19,5 @@ public class AulaModel {
     private String titulo;
     private Date data;
     private int aulas;
-    private int turmaId;
+    private Long turmaId;
 }
