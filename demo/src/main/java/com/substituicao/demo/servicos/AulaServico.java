@@ -67,10 +67,18 @@ public class AulaServico {
 				TurmaDTO.builder().id(3).codigo("ES97").alunos(alunos).disciplina(disciplinas.get(3))
 						.docente(docentes.get(1)).build())
 				.collect(Collectors.toList());
-		aulas = new ArrayList<>();
+
+		aulas = Stream.of(
+				AulaDTO.builder().id(1).titulo("Aula planejamento").data(new Date()).aulas(5).listaDePresenca(alunos).turma(turmas.get(0))
+						.concluida(false).build(),
+				AulaDTO.builder().id(2).titulo("Repasse do trabalho").data(new Date()).aulas(5).listaDePresenca(alunos).turma(turmas.get(1))
+						.concluida(false).build(),
+				AulaDTO.builder().id(1).titulo("Correção de prova").data(new Date()).aulas(6).listaDePresenca(alunos).turma(turmas.get(2))
+						.concluida(false).build()).
+				collect(Collectors.toList());
 	}
 
-	private Long generateUniqueId() {
+	private Long gerarIdUnico() {
 		long val = -1;
 		do {
 			final UUID uid = UUID.randomUUID();
@@ -107,7 +115,7 @@ public class AulaServico {
 	@PostMapping("/servico/aulas")
 	public ResponseEntity<Long> criar(@RequestBody AulaModel aulaModel) throws ParametroNaoEncontradoException {
 		Optional<TurmaDTO> turmaExistente = turmas.stream().filter(t -> t.getId() == aulaModel.getTurmaId()).findAny();
-		AulaDTO aula = AulaDTO.builder().id(generateUniqueId()).titulo(aulaModel.getTitulo()).data(aulaModel.getData())
+		AulaDTO aula = AulaDTO.builder().id(gerarIdUnico()).titulo(aulaModel.getTitulo()).data(aulaModel.getData())
 				.aulas(aulaModel.getAulas())
 				.turma(Optional.ofNullable(turmaExistente.get())
 						.orElseThrow(() -> new ParametroNaoEncontradoException(aulaModel.getTurmaId(), "Turma")))

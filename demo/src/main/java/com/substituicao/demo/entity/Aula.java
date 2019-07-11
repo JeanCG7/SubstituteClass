@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 public class Aula implements Serializable {
     @Id @GeneratedValue
-    private Long id;
+    private long id;
 
     private String titulo;
 
