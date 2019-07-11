@@ -9,9 +9,12 @@ public class DocenteDTO extends PessoaDTO{
     private boolean ativo;
 
     @Builder
-    public DocenteDTO(int id, String nome, String email, String documentoDocente, boolean ativo)
+    public DocenteDTO(long id, String nome, String email, String documentoDocente, boolean ativo)
     {
         super();
+        this.setId(id);
+        this.setNome(nome);
+        this.setEmail(email);
         this.documentoDocente = documentoDocente;
         this.ativo = ativo;
     }

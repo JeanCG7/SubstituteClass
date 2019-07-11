@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class AulaDTO {
-    private Long id;
+    private long id;
     private String titulo;
     private Date data;
     private int aulas;
