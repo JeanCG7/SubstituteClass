@@ -68,14 +68,14 @@ public class AulaServico {
 						.docente(docentes.get(1)).build())
 				.collect(Collectors.toList());
 
-		aulas = Stream.of(
-				AulaDTO.builder().id(gerarIdUnico()).titulo("Aula planejamento").data(new Date()).aulas(5).listaDePresenca(alunos).turma(turmas.get(0))
-						.concluida(false).build(),
-				AulaDTO.builder().id(gerarIdUnico()).titulo("Repasse do trabalho").data(new Date()).aulas(5).listaDePresenca(alunos).turma(turmas.get(1))
-						.concluida(false).build(),
-				AulaDTO.builder().id(gerarIdUnico()).titulo("Correção de prova").data(new Date()).aulas(6).listaDePresenca(alunos).turma(turmas.get(2))
-						.concluida(false).build()).
-				collect(Collectors.toList());
+		aulas = Stream
+				.of(AulaDTO.builder().id(gerarIdUnico()).titulo("Aula planejamento").data(new Date()).aulas(5)
+						.listaDePresenca(alunos).turma(turmas.get(0)).concluida(false).build(),
+						AulaDTO.builder().id(gerarIdUnico()).titulo("Repasse do trabalho").data(new Date()).aulas(5)
+								.listaDePresenca(alunos).turma(turmas.get(1)).concluida(false).build(),
+						AulaDTO.builder().id(gerarIdUnico()).titulo("Correção de prova").data(new Date()).aulas(6)
+								.listaDePresenca(alunos).turma(turmas.get(2)).concluida(false).build())
+				.collect(Collectors.toList());
 	}
 
 	@GetMapping("/servico/aulas")
@@ -91,13 +91,22 @@ public class AulaServico {
 	}
 
 	@GetMapping("/servico/aulas/{id}")
-	public ResponseEntity<AulaDTO> listarPorId(@PathVariable long id) {
-		Optional<AulaDTO> aula = aulas.stream().filter(a -> a.getId() == id).findAny();
-		return ResponseEntity.of(aula);
+	public ResponseEntity<AulaModel> listarPorId(@PathVariable long id) {
+		System.out.println(id);
+		Optional<AulaDTO> aulaExistente = aulas.stream().filter(a -> a.getId() == id).findFirst();
+		if (aulaExistente.isPresent()) {
+			AulaModel aula = AulaModel.builder().id(aulaExistente.get().getId()).titulo(aulaExistente.get().getTitulo())
+					.data(aulaExistente.get().getData()).aulas(aulaExistente.get().getAulas())
+					.turmaId(aulaExistente.get().getTurma().getId()).build();
+
+			return ResponseEntity.status(201).body(aula);
+		} else {
+			return ResponseEntity.ok(null);
+		}
 	}
 
 	@PostMapping("/servico/aulas")
-	public ResponseEntity<Long> criar(@RequestBody AulaModel aulaModel) throws ParametroNaoEncontradoException {
+	public ResponseEntity<AulaDTO> criar(@RequestBody AulaModel aulaModel) throws ParametroNaoEncontradoException {
 		Optional<TurmaDTO> turmaExistente = turmas.stream().filter(t -> t.getId() == aulaModel.getTurmaId()).findAny();
 		AulaDTO aula = AulaDTO.builder().id(gerarIdUnico()).titulo(aulaModel.getTitulo()).data(aulaModel.getData())
 				.aulas(aulaModel.getAulas())
@@ -105,7 +114,7 @@ public class AulaServico {
 						.orElseThrow(() -> new ParametroNaoEncontradoException(aulaModel.getTurmaId(), "Turma")))
 				.build();
 		this.aulas.add(aula);
-		return ResponseEntity.status(201).body(new Long(1));
+		return ResponseEntity.status(201).body(aula);
 	}
 
 	@PutMapping("/servico/aulas/{id}")
