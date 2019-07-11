@@ -69,29 +69,13 @@ public class AulaServico {
 				.collect(Collectors.toList());
 
 		aulas = Stream.of(
-				AulaDTO.builder().id(1).titulo("Aula planejamento").data(new Date()).aulas(5).listaDePresenca(alunos).turma(turmas.get(0))
+				AulaDTO.builder().id(gerarIdUnico()).titulo("Aula planejamento").data(new Date()).aulas(5).listaDePresenca(alunos).turma(turmas.get(0))
 						.concluida(false).build(),
-				AulaDTO.builder().id(2).titulo("Repasse do trabalho").data(new Date()).aulas(5).listaDePresenca(alunos).turma(turmas.get(1))
+				AulaDTO.builder().id(gerarIdUnico()).titulo("Repasse do trabalho").data(new Date()).aulas(5).listaDePresenca(alunos).turma(turmas.get(1))
 						.concluida(false).build(),
-				AulaDTO.builder().id(1).titulo("Correção de prova").data(new Date()).aulas(6).listaDePresenca(alunos).turma(turmas.get(2))
+				AulaDTO.builder().id(gerarIdUnico()).titulo("Correção de prova").data(new Date()).aulas(6).listaDePresenca(alunos).turma(turmas.get(2))
 						.concluida(false).build()).
 				collect(Collectors.toList());
-	}
-
-	private Long gerarIdUnico() {
-		long val = -1;
-		do {
-			final UUID uid = UUID.randomUUID();
-			final ByteBuffer buffer = ByteBuffer.wrap(new byte[16]);
-			buffer.putLong(uid.getLeastSignificantBits());
-			buffer.putLong(uid.getMostSignificantBits());
-			final BigInteger bi = new BigInteger(buffer.array());
-			val = bi.longValue();
-		}
-		// We also make sure that the ID is in positive space, if its not we simply
-		// repeat the process
-		while (val < 0);
-		return val;
 	}
 
 	@GetMapping("/servico/aulas")
@@ -145,10 +129,26 @@ public class AulaServico {
 	}
 
 	@DeleteMapping("/servico/aulas/{id}")
-	public ResponseEntity deletar(@PathVariable int id) {
+	public ResponseEntity deletar(@PathVariable long id) {
 		if (aulas.removeIf(aula -> aula.getId() == id))
 			return ResponseEntity.noContent().build();
 		else
 			return ResponseEntity.notFound().build();
+	}
+
+	private Long gerarIdUnico() {
+		long val = -1;
+		do {
+			final UUID uid = UUID.randomUUID();
+			final ByteBuffer buffer = ByteBuffer.wrap(new byte[16]);
+			buffer.putLong(uid.getLeastSignificantBits());
+			buffer.putLong(uid.getMostSignificantBits());
+			final BigInteger bi = new BigInteger(buffer.array());
+			val = bi.longValue();
+		}
+		// We also make sure that the ID is in positive space, if its not we simply
+		// repeat the process
+		while (val < 0);
+		return val;
 	}
 }
