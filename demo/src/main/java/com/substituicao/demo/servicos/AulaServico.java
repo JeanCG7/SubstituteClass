@@ -91,7 +91,7 @@ public class AulaServico {
 	}
 
 	@GetMapping("/servico/aulas/{id}")
-	public ResponseEntity<AulaDTO> listarPorId(@PathVariable int id) {
+	public ResponseEntity<AulaDTO> listarPorId(@PathVariable Long id) {
 		Optional<AulaDTO> aula = aulas.stream().filter(a -> a.getId() == id).findAny();
 		return ResponseEntity.of(aula);
 	}
@@ -109,20 +109,18 @@ public class AulaServico {
 	}
 
 	@PutMapping("/servico/aulas/{id}")
-	public ResponseEntity<AulaDTO> atualizar(@PathVariable int id, @RequestBody AulaDTO aulaReq)
+	public ResponseEntity<AulaDTO> atualizar(@PathVariable Long id, @RequestBody AulaModel aulaReq)
 			throws ParametroNaoEncontradoException {
 		Optional<AulaDTO> aula = aulas.stream().filter(a -> a.getId() == id).findAny();
 
 		if (aula.isPresent()) {
-			Optional<TurmaDTO> turmaExistente = turmas.stream().filter(t -> t.getId() == aula.get().getTurma().getId())
+			Optional<TurmaDTO> turmaExistente = turmas.stream().filter(t -> t.getId() == aulaReq.getTurmaId())
 					.findAny();
 			aula.get().setTurma(Optional.ofNullable(turmaExistente.get())
-					.orElseThrow(() -> new ParametroNaoEncontradoException(aula.get().getTurma().getId(), "Turma")));
-			aula.get().setId(aulaReq.getId());
+					.orElseThrow(() -> new ParametroNaoEncontradoException(aula.get().aulaReq.getTurmaId(), "Turma")));
 			aula.get().setTitulo(aulaReq.getTitulo());
 			aula.get().setAulas(aulaReq.getAulas());
 			aula.get().setData(aulaReq.getData());
-			aula.get().setListaDePresenca(aulaReq.getListaDePresenca());
 		}
 
 		return ResponseEntity.of(aula);
