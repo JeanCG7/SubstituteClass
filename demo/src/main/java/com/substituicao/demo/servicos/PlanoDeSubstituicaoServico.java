@@ -83,11 +83,11 @@ public class PlanoDeSubstituicaoServico {
 
         planos = Stream.of(
                 PlanoDeSubstituicaoDTO.builder().id(gerarIdUnico()).justificativa("Porque é top").requerente(requerentes.get(0)).aprovado(false)
-                        .aula(aulas.get(1)).build(),
+                        .aula(aulas.get(0)).build(),
                 PlanoDeSubstituicaoDTO.builder().id(gerarIdUnico()).justificativa("Porque é bom").requerente(requerentes.get(0)).aprovado(false)
-                        .aula(aulas.get(2)).build(),
+                        .aula(aulas.get(1)).build(),
                 PlanoDeSubstituicaoDTO.builder().id(gerarIdUnico()).justificativa("Observacao de aula").requerente(requerentes.get(1)).aprovado(true)
-                        .aula(aulas.get(3)).build())
+                        .aula(aulas.get(2)).build())
                 .collect(Collectors.toList());
     }
     @GetMapping("/servico/plano")
