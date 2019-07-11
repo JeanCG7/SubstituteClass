@@ -117,7 +117,7 @@ public class AulaServico {
 			Optional<TurmaDTO> turmaExistente = turmas.stream().filter(t -> t.getId() == aulaReq.getTurmaId())
 					.findAny();
 			aula.get().setTurma(Optional.ofNullable(turmaExistente.get())
-					.orElseThrow(() -> new ParametroNaoEncontradoException(aula.get().aulaReq.getTurmaId(), "Turma")));
+					.orElseThrow(() -> new ParametroNaoEncontradoException(aulaReq.getTurmaId(), "Turma")));
 			aula.get().setTitulo(aulaReq.getTitulo());
 			aula.get().setAulas(aulaReq.getAulas());
 			aula.get().setData(aulaReq.getData());
