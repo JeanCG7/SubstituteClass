@@ -91,7 +91,7 @@ public class AulaServico {
 	}
 
 	@GetMapping("/servico/aulas/{id}")
-	public ResponseEntity<AulaDTO> listarPorId(@PathVariable Long id) {
+	public ResponseEntity<AulaDTO> listarPorId(@PathVariable long id) {
 		Optional<AulaDTO> aula = aulas.stream().filter(a -> a.getId() == id).findAny();
 		return ResponseEntity.of(aula);
 	}
@@ -109,7 +109,7 @@ public class AulaServico {
 	}
 
 	@PutMapping("/servico/aulas/{id}")
-	public ResponseEntity<AulaDTO> atualizar(@PathVariable Long id, @RequestBody AulaModel aulaReq)
+	public ResponseEntity<AulaDTO> atualizar(@PathVariable long id, @RequestBody AulaModel aulaReq)
 			throws ParametroNaoEncontradoException {
 		Optional<AulaDTO> aula = aulas.stream().filter(a -> a.getId() == id).findAny();
 
