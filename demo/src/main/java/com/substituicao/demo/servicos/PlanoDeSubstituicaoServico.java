@@ -157,7 +157,7 @@ public class PlanoDeSubstituicaoServico {
     }
 
     @DeleteMapping("/servico/plano/{id}")
-    public ResponseEntity deletar(@PathVariable int id){
+    public ResponseEntity deletar(@PathVariable long id){
         if (planos.removeIf(plano-> plano.getId() == id))
             return ResponseEntity.noContent().build();
 
